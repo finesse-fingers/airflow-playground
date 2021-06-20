@@ -215,6 +215,25 @@ def ge_validate_source_data(ds, **kwargs):
             "Validation of the source data is not successful ")
 
 
+def ge_validate_source_data_no_cli(ds, **kwargs):
+    context = ge.data_context.DataContext(great_expectations_context_path)
+
+    batch_kwargs_file = {"path": os.path.join(GE_TUTORIAL_ROOT_PATH, "data", "npi_small.csv"),
+                         'datasource': 'input_files'}
+
+    batch_file = context.get_batch(
+        batch_kwargs_file, 'npi_small_file.no_cli')
+
+    results = context.run_validation_operator(
+        "action_list_operator",
+        assets_to_validate=[batch_file],
+        run_id="airflow:" + kwargs['dag_run'].run_id + ":" + str(kwargs['dag_run'].start_date))
+
+    if not results["success"]:
+        raise AirflowException(
+            "Validation of the source data is not successful ")
+
+
 task_validate_source_data = PythonOperator(
     task_id='task_validate_source_data',
     python_callable=validate_source_data,
@@ -234,12 +253,20 @@ task_validate_source_data = PythonOperator(
 #     dag=dag
 # )
 
-ge_task_validate_source_data = PythonOperator(
-    task_id='ge_task_validate_source_data',
+
+ge_task_validate_source_data_no_cli_no_batch = PythonOperator(
+    task_id='ge_task_validate_source_data_no_cli_no_batch',
     python_callable=ge_validate_source_data,
     provide_context=True,
     dag=dag)
 
 
+ge_task_validate_source_data_no_cli = PythonOperator(
+    task_id='ge_task_validate_source_data_no_cli',
+    python_callable=ge_validate_source_data_no_cli,
+    provide_context=True,
+    dag=dag)
+
+
 # DAG dependencies
-task_validate_source_data >> ge_task_validate_source_data
+task_validate_source_data >> ge_task_validate_source_data_no_cli_no_batch >> ge_task_validate_source_data_no_cli

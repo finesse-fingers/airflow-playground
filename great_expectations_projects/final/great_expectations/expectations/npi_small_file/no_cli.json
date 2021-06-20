@@ -1,0 +1,31 @@
+{
+  "data_asset_type": "Dataset",
+  "expectation_suite_name": "npi_small_file.no_cli",
+  "expectations": [
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "NPI"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_table_columns_to_match_ordered_list",
+      "kwargs": {
+        "column_list": [
+          "NPI",
+          "Entity_Type_Code",
+          "Organization_Name",
+          "Last_Name",
+          "First_Name",
+          "State",
+          "Taxonomy_Code"
+        ]
+      },
+      "meta": {}
+    }
+  ],
+  "meta": {
+    "great_expectations_version": "0.13.19"
+  }
+}
