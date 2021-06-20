@@ -4,6 +4,7 @@ RUN set -ex \
     && pip install scipy \
     && pip install acryl-datahub \
     && pip install great_expectations \
+    && pip install airflow-provider-great-expectations \
     && pip install 'dbt<0.19' \
     && pip uninstall -y SQLAlchemy \
     && pip install SQLAlchemy==1.3.15 \

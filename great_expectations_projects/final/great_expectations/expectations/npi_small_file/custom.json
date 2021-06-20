@@ -1,0 +1,29 @@
+{
+  "data_asset_type": null,
+  "expectation_suite_name": "npi_small_file.custom",
+  "expectations": [
+    {
+      "expectation_type": "expect_table_columns_to_match_ordered_list",
+      "kwargs": {
+        "column_list": [
+          "NPI",
+          "Entity_Type_Code",
+          "Organization_Name",
+          "Last_Name",
+          "First_Name",
+          "State",
+          "Taxonomy_Code"
+        ]
+      },
+      "meta": {
+        "notes": {
+          "content": "Some clever comment about this expectation. **Markdown** `Supported`",
+          "format": "markdown"
+        }
+      }
+    }
+  ],
+  "meta": {
+    "great_expectations_version": "0.13.19"
+  }
+}
