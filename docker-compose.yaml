@@ -37,10 +37,8 @@
 # Feel free to modify this file to suit your needs.
 ---
 version: '3'
-x-airflow-common:
-  &airflow-common
-  # image: ${AIRFLOW_IMAGE_NAME:-apache/airflow:2.1.0}
-  build: .
+x-airflow-common: &airflow-common
+  build: . # image: ${AIRFLOW_IMAGE_NAME:-apache/airflow:2.1.0}
   environment: &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: CeleryExecutor
     AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
@@ -81,7 +79,7 @@ services:
       test: ['CMD', 'pg_isready', '-U', 'airflow']
       interval: 5s
       retries: 5
-    restart: always
+    restart: unless-stopped
 
   redis:
     image: redis:latest
@@ -92,7 +90,7 @@ services:
       interval: 5s
       timeout: 30s
       retries: 50
-    restart: always
+    restart: unless-stopped
 
   airflow-webserver:
     <<: *airflow-common
@@ -104,7 +102,7 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
-    restart: always
+    restart: unless-stopped
 
   airflow-scheduler:
     <<: *airflow-common
@@ -118,7 +116,7 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
-    restart: always
+    restart: unless-stopped
 
   airflow-worker:
     <<: *airflow-common
@@ -130,7 +128,7 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
-    restart: always
+    restart: unless-stopped
 
   airflow-init:
     <<: *airflow-common
@@ -152,7 +150,7 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
-    restart: always
+    restart: unless-stopped
 
   ge_data_docs:
     image: flashspys/nginx-static
