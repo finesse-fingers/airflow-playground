@@ -81,6 +81,18 @@ services:
       retries: 5
     restart: unless-stopped
 
+  # pgAdmin is a web interface which can be used to check the contents of things
+  # like the mock-smes database.
+  pgAdmin:
+    image: dpage/pgadmin4
+    ports:
+      # The pgAdmin web port.
+      - '5050:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: migration@poc.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    restart: unless-stopped
+
   redis:
     image: redis:latest
     ports:
